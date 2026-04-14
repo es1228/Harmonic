@@ -1,4 +1,5 @@
 import type { Themes } from "../App";
+import HeaderItem from "./HeaderItem";
 
 type HeaderProps = {
 	theme: Themes;
@@ -17,39 +18,27 @@ const Header = ({ theme, changeTheme }: HeaderProps) => {
 			</div>
 			<nav className="ml-auto">
 				<ul className="flex gap-4">
-					<li
-						className="group flex flex-col items-center transition-all duration-100 hover:cursor-pointer"
+					<HeaderItem
 						onClick={() =>
 							open("https://github.com/es1228/Harmonic")
 						}
-					>
-						<span className="icon icon-rounded group-hover:icon-700 transition-all duration-100">
-							code
-						</span>
-						<p className="text-xs group-hover:underline">Repo</p>
-					</li>
-					<li
-						className="group flex flex-col items-center transition-all duration-100 hover:cursor-pointer"
+						icon="code"
+						text="Repo"
+					/>
+					<HeaderItem
 						onClick={() =>
 							open(
 								"https://raw.githubusercontent.com/es1228/Harmonic/main/README.md",
 							)
 						}
-					>
-						<span className="icon icon-rounded group-hover:icon-filled transition-all duration-100">
-							info
-						</span>
-						<p className="text-xs group-hover:underline">About</p>
-					</li>
-					<li
-						className="group flex flex-col items-center transition-all duration-100 hover:cursor-pointer"
+						icon="info"
+						text="about"
+					/>
+					<HeaderItem
 						onClick={changeTheme}
-					>
-						<span className="ms-rounded icon icon-rounded group-hover:icon-filled transition-all duration-100">
-							{theme === "dark" ? "dark_mode" : "light_mode"}
-						</span>
-						<p className="text-xs group-hover:underline">Theme</p>
-					</li>
+						icon={theme === "dark" ? "dark_mode" : "light_mode"}
+						text="Theme"
+					/>
 				</ul>
 			</nav>
 		</div>

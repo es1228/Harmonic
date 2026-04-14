@@ -5,27 +5,41 @@ export type Themes = "light" | "dark";
 
 const App = () => {
 	// theme logic
-	const [theme, setTheme] = useState<Themes>("dark");
+	const [theme, setTheme] = useState<Themes>(() => {
+		let data: Themes;
+		const savedTheme = localStorage.getItem("theme");
+
+		if (savedTheme) {
+			window.matchMedia("(prefers-color-scheme: dark)").matches
+				? (data = "dark")
+				: (data = "light");
+		} else {
+			data = savedTheme as Themes;
+		}
+
+		return data;
+	});
 
 	useEffect(() => {
-		const root = document.documentElement
+		const root = document.documentElement;
+
 		if (theme === "dark") {
 			root.classList.add("dark");
 			root.classList.remove("light");
-		}
-		else {
+		} else {
 			root.classList.add("light");
 			root.classList.remove("dark");
 		}
+
+		localStorage.setItem("theme", theme);
 	}, [theme]);
 
 	const changeTheme = () => {
 		theme === "dark" ? setTheme("light") : setTheme("dark");
 	};
-
 	return (
 		<>
-			<Header changeTheme={changeTheme} theme={theme} />
+			<Header theme={theme} changeTheme={changeTheme} />
 		</>
 	);
 };
