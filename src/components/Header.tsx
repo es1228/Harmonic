@@ -8,13 +8,10 @@ type HeaderProps = {
 
 const Header = ({ theme, changeTheme }: HeaderProps) => {
 	return (
-		<div className="m-2 flex rounded-2xl bg-slate-300 p-4 dark:bg-slate-900">
-			<div className="flex items-center gap-2">
+		<div className="bg-primary dark:bg-primary-dark m-2 flex rounded-2xl p-4 md:rounded-bl-none">
+			<div className="ml-2 flex items-center gap-2">
 				<span className="icon icon-rounded">music_note</span>
-				<div>
-					<h1 className="text-lg font-bold">Harmonic</h1>
-					<p className="text-xs">FOSS Music Site</p>
-				</div>
+				<h1 className="text-lg font-bold">Harmonic</h1>
 			</div>
 			<nav className="ml-auto">
 				<ul className="flex gap-4">
@@ -32,7 +29,7 @@ const Header = ({ theme, changeTheme }: HeaderProps) => {
 							)
 						}
 						icon="info"
-						text="about"
+						text="About"
 					/>
 					<HeaderItem
 						onClick={changeTheme}

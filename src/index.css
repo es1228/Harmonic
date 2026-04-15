@@ -1,5 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
+@import "tailwind-rounded-out";
 @import "@savaryna/tailwindcss-material-symbols";
 
+@theme {
+    --font-roboto: "Roboto", sans-serif;
+}
+
+/* colors */
+
 @custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-page: var(--color-neutral-50);
+    --color-page-dark: var(--color-mist-950);
+    --color-text: var(--color-zinc-900);
+    --color-text-dark: var(--color-slate-200);
+    --color-primary: var(--color-slate-200);
+    --color-primary-dark: var(--color-zinc-900);
+    --color-selected: color-mix(var(--color-blue-500) 20%, transparent);
+}
