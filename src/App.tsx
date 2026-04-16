@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
+import TheoryMenu from "./components/TheoryMenu";
 
 // types
 export type Themes = "light" | "dark";
@@ -42,18 +43,25 @@ const App = () => {
 	};
 
 	// page logic
-	const [page, setPage] = useState<Pages>("Maker")
+	const [page, setPage] = useState<Pages>("Maker");
 
 	const changePage = (page: Pages) => {
 		setPage(page);
+	};
+
+	let content;
+
+	if (page === "Theory") {
+		content = <TheoryMenu />;
 	}
 
 	return (
 		<>
 			<Header theme={theme} changeTheme={changeTheme} />
-			<Navbar onClick={changePage} page={page}/>
-			<div className="ml-4 md:ml-50 mt-6">
+			<Navbar onClick={changePage} page={page} />
+			<div className="mx-4 flex flex-col gap-4 mt-25 md:ml-50 md:mr-4 mb-4">
 				<h1 className="text-2xl font-bold">{page}</h1>
+				{content}
 			</div>
 		</>
 	);

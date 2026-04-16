@@ -8,7 +8,7 @@ type HeaderProps = {
 
 const Header = ({ theme, changeTheme }: HeaderProps) => {
 	return (
-		<div className="bg-primary dark:bg-primary-dark m-2 flex rounded-2xl p-4 md:rounded-bl-none">
+		<div className="bg-on-bg/70 dark:bg-on-bg-dark/70 fixed top-0 right-0 left-0 z-100000 flex p-4 backdrop-blur-2xl">
 			<div className="ml-2 flex items-center gap-2">
 				<span className="icon icon-rounded">music_note</span>
 				<h1 className="text-lg font-bold">Harmonic</h1>

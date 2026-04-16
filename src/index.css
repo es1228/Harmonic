@@ -16,7 +16,8 @@
     --color-page-dark: var(--color-mist-950);
     --color-text: var(--color-zinc-900);
     --color-text-dark: var(--color-slate-200);
-    --color-primary: var(--color-slate-200);
-    --color-primary-dark: var(--color-zinc-900);
-    --color-selected: color-mix(var(--color-blue-500) 20%, transparent);
+    --color-text-secondary: var(--color-neutral-400);
+    --color-on-bg: var(--color-slate-200);
+    --color-on-bg-dark: var(--color-zinc-900);
+    --color-primary: color-mix(var(--color-blue-500) 20%, transparent);
 }
