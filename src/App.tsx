@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
-import TheoryMenu from "./components/TheoryMenu";
+import TheoryPage from "./components/TheoryPage";
 
 // types
 export type Themes = "light" | "dark";
@@ -49,11 +49,16 @@ const App = () => {
 		setPage(page);
 	};
 
+	// scroll to top on page change
+	useEffect(() => {
+		window.scrollTo({top: 0});
+	}, [page])
+
+
+	// conditional page rendering
 	let content;
 
-	if (page === "Theory") {
-		content = <TheoryMenu />;
-	}
+	if (page === "Theory") content = <TheoryPage />;
 
 	return (
 		<>
