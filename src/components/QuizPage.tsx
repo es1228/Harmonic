@@ -1,7 +1,7 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import AnswerOption from "./AnswerOption";
 import Staff from "./Staff";
-import { AbcNotation, Range, Note, Interval } from "tonal";
+import { AbcNotation, Range, Note, Interval, Scale } from "tonal";
 import {
 	mainIntervals,
 	mainKeys,
@@ -28,7 +28,7 @@ const QuizPage = ({
 	const [options, setOptions] = useState<string[]>([]);
 	const [answer, setAnswer] = useState<string>("");
 	const [clef, setClef] = useState<ClefType>("treble");
-	const [keyType, setKeyType] = useState<KeySigType>("maj");
+	const [keyType, setKeyType] = useState<KeySigType>("major");
 	const [keySignature, setKeySignature] = useState<string>();
 	const [timeSignature, setTimeSignature] = useState<string>("4/4");
 	const [music, setMusic] = useState<string>("");
@@ -72,15 +72,18 @@ const QuizPage = ({
 			// randomize key signature
 			const keyValue = Math.round(Math.random());
 			let keySuffix: KeySigType;
-			keyValue === 0 ? (keySuffix = "min") : (keySuffix = "maj");
+			keyValue === 0 ? (keySuffix = "minor") : (keySuffix = "major");
 			setKeyType(keySuffix);
 			const note = getRandomNote();
 
+			setMusic("x")
 			setKeySignature(
 				`
 				${Note.pitchClass(note)} ${keySuffix}`.trim(),
 			);
-			setOptions(mainNotes.map((note) => `${note} ${keySuffix}`));
+			setOptions(
+				mainNotes.map((note) => `${note} ${keySuffix.slice(0, -2)}`),
+			);
 			setAnswer(`${Note.pitchClass(note)} ${keySuffix}`);
 		} else if (topic.includes("Interval")) {
 			// get a random interval in treble or bass
@@ -104,6 +107,26 @@ const QuizPage = ({
 			setMusic(formattedInterval);
 			setOptions(mainIntervals);
 			setAnswer(Interval.simplify(Interval.distance(note1, note2)));
+		} else if (topic.includes("Scale")) {
+			// scale exercise
+
+			// get a random scale
+			const note = getRandomNote();
+
+			const keyValue = Math.round(Math.random());
+			let keySuffix: KeySigType;
+			keyValue === 0 ? (keySuffix = "minor") : (keySuffix = "major");
+
+			const scale = `${note} ${keySuffix}`;
+			const notesRaw = Scale.get(scale).notes;
+			const notes = notesRaw.map((note) =>
+				AbcNotation.scientificToAbcNotation(note),
+			);
+
+			const formattedNotes = notes.join(" ");
+			setMusic(formattedNotes);
+			setOptions([`${Note.pitchClass(note)} major`, `${Note.pitchClass(note)} minor`]);
+			setAnswer(`${Note.pitchClass(note)} ${keySuffix}`);
 		}
 	}, []);
 

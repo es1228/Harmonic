@@ -80,7 +80,7 @@ export const pageDescriptions = [
 ];
 
 export type ClefType = "treble" | "bass";
-export type KeySigType = "maj" | "min";
+export type KeySigType = "major" | "minor";
 
 export const mainNotes = ["C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "B", "Bb"]
 export const mainKeys = ["C major", "C# major", "Db major", "D major", "D# major", "Eb major", "E major", "F major", "F# major", "Gb major", "G major", "G# major", "Ab major", "A major", "A# major", "B major", "Bb major" , "C minor", "C# minor", "Db minor", "D minor", "D# minor", "Eb minor", "E minor", "F minor", "F# minor", "Gb minor", "G minor", "G# minor", "Ab minor", "A minor", "A# minor", "B minor", "Bb minor"]
