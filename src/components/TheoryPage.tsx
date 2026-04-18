@@ -4,6 +4,7 @@ import QuizPage from "./QuizPage";
 import { pageDescriptions, pageTitles, sectionTitles } from "./Constants";
 
 const TheoryPage = () => {
+	const [key, setKey] = useState(0);
 	const [pageView, setPageView] = useState<"Theory" | "Quiz">("Theory");
 	const [title, setTitle] = useState("");
 	const [section, setSection] = useState("Staff Identification");
@@ -20,8 +21,8 @@ const TheoryPage = () => {
 							title={title}
 							description={pageDescriptions[sIndex][tIndex]}
 							onClick={() => {
-								setTitle(pageDescriptions[sIndex][tIndex])
-								setTopic(pageTitles[sIndex][tIndex])
+								setTitle(pageDescriptions[sIndex][tIndex]);
+								setTopic(pageTitles[sIndex][tIndex]);
 								setPageView("Quiz");
 							}}
 						/>
@@ -32,13 +33,19 @@ const TheoryPage = () => {
 	);
 
 	const handleExit = () => setPageView("Theory");
+	const handleReload = () =>
+		setTimeout(() => {
+			setKey((prevKey) => prevKey + 1);
+		}, 250);
 
 	if (pageView === "Quiz")
 		return (
 			<QuizPage
+				key={key}
 				title={title}
 				section={section}
 				topic={topic}
+				onReload={handleReload}
 				onExit={handleExit}
 			/>
 		);
