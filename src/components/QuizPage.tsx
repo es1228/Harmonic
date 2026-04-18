@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
 import AnswerOption from "./AnswerOption";
 import Staff from "./Staff";
-import { AbcNotation, Range, Note, Interval, Scale } from "tonal";
 import {
+	AbcNotation,
+	Range,
+	Note,
+	Interval,
+	Scale,
+	Chord,
+} from "tonal";
+import {
+	mainChords,
 	mainIntervals,
 	mainKeys,
 	mainNotes,
@@ -76,7 +84,7 @@ const QuizPage = ({
 			setKeyType(keySuffix);
 			const note = getRandomNote();
 
-			setMusic("x")
+			setMusic("x");
 			setKeySignature(
 				`
 				${Note.pitchClass(note)} ${keySuffix}`.trim(),
@@ -125,8 +133,35 @@ const QuizPage = ({
 
 			const formattedNotes = notes.join(" ");
 			setMusic(formattedNotes);
-			setOptions([`${Note.pitchClass(note)} major`, `${Note.pitchClass(note)} minor`]);
+			setOptions([
+				`${Note.pitchClass(note)} major`,
+				`${Note.pitchClass(note)} minor`,
+			]);
 			setAnswer(`${Note.pitchClass(note)} ${keySuffix}`);
+		} else if (topic.includes("Chord")) {
+			// get a list of every chord type
+			const chordTypes = mainChords;
+
+			// randomize chord
+			const note = getRandomNote();
+			const chordType =
+				chordTypes[Math.floor(Math.random() * chordTypes.length)];
+			const chord = `${Note.pitchClass(note)}${chordType}`;
+
+			let octave;
+			clefType === 1 ? (octave = "4") : (octave = "2");
+
+			const notesRaw = Chord.get(chord).notes;
+			console.log(notesRaw);
+			const notes = notesRaw.map((note) =>
+				AbcNotation.scientificToAbcNotation(`${note}${octave}`),
+			);
+
+			const formattedNotes = `[${notes.join("")}]`;
+			setMusic(formattedNotes);
+			setOptions(chordTypes);
+			setAnswer(chordType);
+			console.log(chord)
 		}
 	}, []);
 
@@ -144,7 +179,7 @@ const QuizPage = ({
 			<Staff
 				music={`X:1\n%%stretchlast\nM:${timeSignature}\nL:1/1\nK:${keySignature} clef=${clef}\n${music}|`}
 			/>
-			<div className="flex flex-wrap gap-2">
+			<div className="flex flex-wrap gap-2 mb-25">
 				{options.map((opt) => (
 					<AnswerOption
 						key={opt}
