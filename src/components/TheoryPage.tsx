@@ -5,6 +5,9 @@ import { pageDescriptions, pageTitles, sectionTitles } from "./Constants";
 
 const TheoryPage = () => {
 	const [pageView, setPageView] = useState<"Theory" | "Quiz">("Theory");
+	const [title, setTitle] = useState("");
+	const [section, setSection] = useState("Staff Identification");
+	const [topic, setTopic] = useState("");
 
 	const menu = (
 		<div className="flex flex-col gap-4">
@@ -16,7 +19,11 @@ const TheoryPage = () => {
 						<OptionCard
 							title={title}
 							description={pageDescriptions[sIndex][tIndex]}
-							onClick={() => setPageView("Quiz")}
+							onClick={() => {
+								setTitle(pageDescriptions[sIndex][tIndex])
+								setTopic(pageTitles[sIndex][tIndex])
+								setPageView("Quiz");
+							}}
 						/>
 					))}
 				</div>
@@ -24,10 +31,17 @@ const TheoryPage = () => {
 		</div>
 	);
 
-    const handleExit = () => setPageView("Theory")
+	const handleExit = () => setPageView("Theory");
 
 	if (pageView === "Quiz")
-		return <QuizPage title="Identify the displayed note" onExit={handleExit}/>;
+		return (
+			<QuizPage
+				title={title}
+				section={section}
+				topic={topic}
+				onExit={handleExit}
+			/>
+		);
 
 	return menu;
 };
