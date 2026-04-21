@@ -15,9 +15,9 @@ const TheoryPage = () => {
 			{sectionTitles.map((title, sIndex) => (
 				<div key={title} className="flex flex-col gap-4">
 					<h1 className="text-lg">{title}</h1>
-					<hr className="text-text-secondary rounded-2xl" />
 					{pageTitles[sIndex].map((title, tIndex) => (
 						<OptionCard
+						key={title}
 							title={title}
 							description={pageDescriptions[sIndex][tIndex]}
 							onClick={() => {
@@ -33,10 +33,6 @@ const TheoryPage = () => {
 	);
 
 	const handleExit = () => setPageView("Theory");
-	const handleReload = () =>
-		setTimeout(() => {
-			setKey((prevKey) => prevKey + 1);
-		}, 250);
 
 	if (pageView === "Quiz")
 		return (
@@ -45,7 +41,6 @@ const TheoryPage = () => {
 				title={title}
 				section={section}
 				topic={topic}
-				onReload={handleReload}
 				onExit={handleExit}
 			/>
 		);

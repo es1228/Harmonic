@@ -9,7 +9,7 @@ type AnswerOptionProps = {
 const AnswerOption = ({ text, isAnswer, onClick }: AnswerOptionProps) => {
 	return (
 		<button
-			className="bg-on-bg dark:bg-on-bg-dark hover:bg-primary flex-1 rounded-2xl p-4 outline-0 transition duration-300 ease-in-out hover:scale-105 hover:cursor-pointer"
+			className="bg-on-bg dark:bg-on-bg-dark hover:bg-primary flex-1 rounded-2xl p-4 text-wrap outline-0 transition duration-100 ease-in-out hover:scale-105 hover:cursor-pointer text-sm"
 			onClick={(e: MouseEvent<HTMLButtonElement>) => {
 				isAnswer
 					? (e.currentTarget.style.backgroundColor = "green")

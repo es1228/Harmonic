@@ -1,28 +1,13 @@
 import { useEffect, useState } from "react";
 import AnswerOption from "./AnswerOption";
 import Staff from "./Staff";
-import {
-	AbcNotation,
-	Range,
-	Note,
-	Interval,
-	Scale,
-	Chord,
-} from "tonal";
-import {
-	mainChords,
-	mainIntervals,
-	mainKeys,
-	mainNotes,
-	type ClefType,
-	type KeySigType,
-} from "./Constants";
+import QuizSettings from "./QuizSettings";
+import useQuizLogic from "../hooks/useQuizLogic";
 
 type QuizPageProps = {
 	title: string;
 	section: string;
 	topic: string;
-	onReload: () => void;
 	onExit: () => void;
 };
 
@@ -30,140 +15,24 @@ const QuizPage = ({
 	title,
 	section,
 	topic,
-	onReload,
 	onExit,
 }: QuizPageProps) => {
-	const [options, setOptions] = useState<string[]>([]);
-	const [answer, setAnswer] = useState<string>("");
-	const [clef, setClef] = useState<ClefType>("treble");
-	const [keyType, setKeyType] = useState<KeySigType>("major");
-	const [keySignature, setKeySignature] = useState<string>();
-	const [timeSignature, setTimeSignature] = useState<string>("4/4");
-	const [music, setMusic] = useState<string>("");
+	const {
+		music,
+		answer,
+		clef,
+		keySignature,
+		settings,
+		enabledSettings,
+		toggleOption,
+		refresh,
+		allOptions,
+	} = useQuizLogic(topic);
 
-	useEffect(() => {
-		// randomize clef
-		const clefType = Math.round(Math.random());
-		clefType === 1 ? setClef("treble") : setClef("bass");
-
-		// set ranges for treble and bass
-		let range;
-		clefType === 1 ? (range = ["C4", "B5"]) : (range = ["C2", "B3"]);
-
-		// create a list of notes and remove the duplicated
-		const allNotes = Range.chromatic(range, { sharps: true });
-		const allEnharmonics = allNotes.map((note) => Note.enharmonic(note));
-		const allCombinedNotesRaw = [...allNotes, ...allEnharmonics];
-		const allCombinedNotes = [
-			...new Map(
-				allCombinedNotesRaw.map((note) => [note, note]),
-			).values(),
-		];
-
-		// random note
-		const getRandomNote = () => {
-			return allCombinedNotes[
-				Math.floor(Math.random() * allCombinedNotes.length)
-			];
-		};
-
-		if (topic.includes("Note")) {
-			// note exercise
-			const note = getRandomNote();
-
-			setMusic(AbcNotation.scientificToAbcNotation(note));
-			setOptions(mainNotes);
-			setAnswer(Note.pitchClass(note));
-		} else if (topic.includes("Key Signature")) {
-			// key signature exercise
-
-			// randomize key signature
-			const keyValue = Math.round(Math.random());
-			let keySuffix: KeySigType;
-			keyValue === 0 ? (keySuffix = "minor") : (keySuffix = "major");
-			setKeyType(keySuffix);
-			const note = getRandomNote();
-
-			setMusic("x");
-			setKeySignature(
-				`
-				${Note.pitchClass(note)} ${keySuffix}`.trim(),
-			);
-			setOptions(
-				mainNotes.map((note) => `${note} ${keySuffix.slice(0, -2)}`),
-			);
-			setAnswer(`${Note.pitchClass(note)} ${keySuffix}`);
-		} else if (topic.includes("Interval")) {
-			// get a random interval in treble or bass
-			let octave;
-			clefType === 1 ? (octave = "4") : (octave = "2");
-
-			const note1 = `${getRandomNote().toString().slice(0, -1)}${octave}`;
-			const note2 =
-				allCombinedNotes[
-					allCombinedNotes.indexOf(note1) +
-						Math.floor(Math.random() * 9)
-				];
-
-			// abc formatting
-			const formattedInterval =
-				`[${AbcNotation.scientificToAbcNotation(note1)}${AbcNotation.scientificToAbcNotation(note2)}]`.replaceAll(
-					",",
-					"",
-				);
-
-			setMusic(formattedInterval);
-			setOptions(mainIntervals);
-			setAnswer(Interval.simplify(Interval.distance(note1, note2)));
-		} else if (topic.includes("Scale")) {
-			// scale exercise
-
-			// get a random scale
-			const note = getRandomNote();
-
-			const keyValue = Math.round(Math.random());
-			let keySuffix: KeySigType;
-			keyValue === 0 ? (keySuffix = "minor") : (keySuffix = "major");
-
-			const scale = `${note} ${keySuffix}`;
-			const notesRaw = Scale.get(scale).notes;
-			const notes = notesRaw.map((note) =>
-				AbcNotation.scientificToAbcNotation(note),
-			);
-
-			const formattedNotes = notes.join(" ");
-			setMusic(formattedNotes);
-			setOptions([
-				`${Note.pitchClass(note)} major`,
-				`${Note.pitchClass(note)} minor`,
-			]);
-			setAnswer(`${Note.pitchClass(note)} ${keySuffix}`);
-		} else if (topic.includes("Chord")) {
-			// get a list of every chord type
-			const chordTypes = mainChords;
-
-			// randomize chord
-			const note = getRandomNote();
-			const chordType =
-				chordTypes[Math.floor(Math.random() * chordTypes.length)];
-			const chord = `${Note.pitchClass(note)}${chordType}`;
-
-			let octave;
-			clefType === 1 ? (octave = "4") : (octave = "2");
-
-			const notesRaw = Chord.get(chord).notes;
-			console.log(notesRaw);
-			const notes = notesRaw.map((note) =>
-				AbcNotation.scientificToAbcNotation(`${note}${octave}`),
-			);
-
-			const formattedNotes = `[${notes.join("")}]`;
-			setMusic(formattedNotes);
-			setOptions(chordTypes);
-			setAnswer(chordType);
-			console.log(chord)
-		}
-	}, []);
+	const availableOptions = allOptions.filter((_, index) => {
+		const optionRow = enabledSettings[2];
+		return optionRow ? optionRow[index] : false;
+	});
 
 	return (
 		<>
@@ -176,16 +45,21 @@ const QuizPage = ({
 					X
 				</button>
 			</div>
-			<Staff
-				music={`X:1\n%%stretchlast\nM:${timeSignature}\nL:1/1\nK:${keySignature} clef=${clef}\n${music}|`}
+			<QuizSettings
+				settings={settings}
+				enabledOptions={enabledSettings}
+				onCheckboxClick={toggleOption}
 			/>
-			<div className="flex flex-wrap gap-2 mb-25">
-				{options.map((opt) => (
+			<Staff
+				music={`X:1\n%%stretchlast\nM:4/4\nL:1/1\nK:${keySignature} clef=${clef}\n${music}|`}
+			/>
+			<div className="mb-25 flex flex-wrap gap-2">
+				{availableOptions.map((opt) => (
 					<AnswerOption
-						key={opt}
+						key={`${opt}-${answer}`}
 						text={opt}
 						isAnswer={opt === answer ? true : false}
-						onClick={opt === answer ? onReload : () => {}}
+						onClick={opt === answer ? () => refresh(300) : () => {}}
 					/>
 				))}
 			</div>

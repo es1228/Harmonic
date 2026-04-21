@@ -86,3 +86,6 @@ export const mainNotes = ["C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb"
 export const mainKeys = ["C major", "C# major", "Db major", "D major", "D# major", "Eb major", "E major", "F major", "F# major", "Gb major", "G major", "G# major", "Ab major", "A major", "A# major", "B major", "Bb major" , "C minor", "C# minor", "Db minor", "D minor", "D# minor", "Eb minor", "E minor", "F minor", "F# minor", "Gb minor", "G minor", "G# minor", "Ab minor", "A minor", "A# minor", "B minor", "Bb minor"]
 export const mainIntervals = ["1P", "1A", "1d", "2M", "2m", "2A", "2d", "3M", "3m", "3A", "3d", "4P", "4A", "4d", "5P", "5A", "5d", "6M", "6m", "6A", "6d", "7M", "7m", "7A", "7d", "8P","8A", "8d"]
 export const mainChords = ["maj", "min", "aug", "dim", "7", "maj7", "min7", "min7b5", "dim7"]
+
+export const clefs = ["treble", "bass"];
+export const keyTypes = ["Major", "Minor"]
